@@ -11,7 +11,7 @@ A complete RESTful API for a Mini E-Commerce system built with ASP.NET Core usin
 - [Features](#features)
 
 
-📁 **Postman Directory**: [AppsWave.Ecommerce.Shared/Postman](./AppsWave.Ecommerce/AppsWave.Ecommerce.Shared/Postman)
+📁 **Postman Directory**: [AppsWave.Ecommerce.Shared/Postman](./AppsWave.Ecommerce.Shared/Postman)
 
 ## 📚 API Documentation
 
@@ -276,7 +276,7 @@ Authorization: Bearer <admin-token>
 ## 📮 Postman Collection
 
 A complete Postman collection is included in the repository:
-📁 **Postman Directory**: [AppsWave.Ecommerce.Shared/Postman](./AppsWave.Ecommerce/AppsWave.Ecommerce.Shared/Postman)
+📁 **Postman Directory**: [AppsWave.Ecommerce.Shared/Postman](./AppsWave.Ecommerce.Shared/Postman)
 
 ### How to Import the Collection
 
