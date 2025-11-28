@@ -1,0 +1,954 @@
+{
+	"info": {
+		"_postman_id": "32c1bb26-580e-4343-9027-cc5fd4495203",
+		"name": "AppsWave E-Commerce API",
+		"description": "Complete API collection for AppsWave E-Commerce System - All endpoints use POST method",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json",
+		"_exporter_id": "28419592"
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains success message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.a('string');",
+									"    pm.expect(jsonData).to.include('User registered successfully');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": "{{base_url}}/api/Auth/register",
+						"description": "Register a new user account. All users are registered as Visitors by default."
+					},
+					"response": [
+						{
+							"name": "Register Already Exists.",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"Test User 2\",\n    \"email\": \"test2@example.com\",\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}"
+								},
+								"url": "{{base_url}}/api/Auth/register"
+							},
+							"status": "Bad Request",
+							"code": 400,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:47:01 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "Username already exists."
+						},
+						{
+							"name": "Registered Successfully",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"fullName\": \"Test User 2\",\n    \"email\": \"test2@example.com\",\n    \"username\": \"testuser2\",\n    \"password\": \"password123\"\n}"
+								},
+								"url": "{{base_url}}/api/Auth/register"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "text/plain; charset=utf-8"
+								},
+								{
+									"key": "Content-Encoding",
+									"value": "gzip"
+								},
+								{
+									"key": "Vary",
+									"value": "Accept-Encoding"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:47:12 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "User registered successfully."
+						}
+					]
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Response has token\", function () {",
+									"    pm.expect(jsonData).to.have.property('Token');",
+									"    pm.environment.set('jwt_token', jsonData.Token);",
+									"    pm.collectionVariables.set('jwt_token', jsonData.Token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": "{{base_url}}/api/Auth/login",
+						"description": "Login and get JWT token. The token will be automatically saved to environment variable 'jwt_token'."
+					},
+					"response": [
+						{
+							"name": "Login - Admin",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+								},
+								"url": "{{base_url}}/api/Auth/login"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:48:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc2NDQxNjkzMiwiaXNzIjoiQXBwc1dhdmUuRWNvbW1lcmNlLkFQSSIsImF1ZCI6IkFwcHNXYXZlLkVjb21tZXJjZS5BUEkifQ.NZ3yG8Z5PsLzrMSGXx0UxKyXvv1rAchXPeS6sZ8ta1Orc_axBmtYsWfIKGO4VAsW1ln_oQcxcL9nNCyrmq4PLA\"\n}"
+						},
+						{
+							"name": "Login - Visitor",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"username\": \"visitor\",\n    \"password\": \"visitor123\"\n}"
+								},
+								"url": "{{base_url}}/api/Auth/login"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:49:39 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"token\": \"eyJhbGciOiJodHRwOi8vd3d3LnczLm9yZy8yMDAxLzA0L3htbGRzaWctbW9yZSNobWFjLXNoYTUxMiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjIiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoidmlzaXRvciIsImh0dHA6Ly9zY2hlbWFzLm1pY3Jvc29mdC5jb20vd3MvMjAwOC8wNi9pZGVudGl0eS9jbGFpbXMvcm9sZSI6IlZpc2l0b3IiLCJleHAiOjE3NjQ0MTY5NzksImlzcyI6IkFwcHNXYXZlLkVjb21tZXJjZS5BUEkiLCJhdWQiOiJBcHBzV2F2ZS5FY29tbWVyY2UuQVBJIn0.RcTiNt-rvBNEfsaorBrcZk2LK88lpFa1KX9a9Fre_nd_YiUhCwCxTeUSVeKs5toaKK-1_s0HcWyUUeNUwJVlSg\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Authentication endpoints for user registration and login."
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page\": 1,\n    \"pageSize\": 10\n}"
+						},
+						"url": "{{base_url}}/api/Products/getAll",
+						"description": "Get paginated list of products. Requires Admin or Visitor role."
+					},
+					"response": [
+						{
+							"name": "Get All Products",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"page\": 1,\n    \"pageSize\": 10\n}"
+								},
+								"url": "{{base_url}}/api/Products/getAll"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:50:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"totalItems\": 3,\n    \"page\": 1,\n    \"pageSize\": 10,\n    \"items\": [\n        {\n            \"id\": 2,\n            \"arabicName\": \"ماوس\",\n            \"englishName\": \"Mouse\",\n            \"price\": 25.5\n        },\n        {\n            \"id\": 3,\n            \"arabicName\": \"لوحة مفاتيح\",\n            \"englishName\": \"Keyboard\",\n            \"price\": 50\n        },\n        {\n            \"id\": 4,\n            \"arabicName\": \"هاتف ذكي محدث\",\n            \"englishName\": \"Updated Smartphone\",\n            \"price\": 899.99\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": "{{base_url}}/api/Products/getById",
+						"description": "Get a single product by ID. Requires Admin or Visitor role."
+					},
+					"response": [
+						{
+							"name": "Get Product by ID",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 2\n}"
+								},
+								"url": "{{base_url}}/api/Products/getById"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:51:25 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 2,\n    \"arabicName\": \"ماوس\",\n    \"englishName\": \"Mouse\",\n    \"price\": 25.5\n}"
+						}
+					]
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 0,\n    \"arabicName\": \"هاتف ذكي\",\n    \"englishName\": \"Smartphone\",\n    \"price\": 999.99\n}"
+						},
+						"url": "{{base_url}}/api/Products/createOrUpdate",
+						"description": "Create a new product. Set id to 0 or omit it. Requires Admin role."
+					},
+					"response": [
+						{
+							"name": "Create Product Forbidden",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 0,\n    \"arabicName\": \"هاتف ذكي\",\n    \"englishName\": \"Smartphone\",\n    \"price\": 999.99\n}"
+								},
+								"url": "{{base_url}}/api/Products/createOrUpdate"
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": null,
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:51:40 GMT"
+								}
+							],
+							"cookie": [],
+							"body": null
+						},
+						{
+							"name": "Create Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 0,\n    \"arabicName\": \"هاتف ذكي\",\n    \"englishName\": \"Smartphone\",\n    \"price\": 999.99\n}"
+								},
+								"url": "{{base_url}}/api/Products/createOrUpdate"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:52:29 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product created successfully.\",\n    \"product\": {\n        \"id\": 5,\n        \"arabicName\": \"هاتف ذكي\",\n        \"englishName\": \"Smartphone\",\n        \"price\": 999.99\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 4,\n    \"arabicName\": \"هاتف ذكي محدث\",\n    \"englishName\": \"Updated Smartphone\",\n    \"price\": 899.99\n}"
+						},
+						"url": "{{base_url}}/api/Products/createOrUpdate",
+						"description": "Update an existing product. Provide the product id. Requires Admin role."
+					},
+					"response": [
+						{
+							"name": "Update Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 4,\n    \"arabicName\": \"هاتف ذكي محدث\",\n    \"englishName\": \"Updated Smartphone\",\n    \"price\": 899.99\n}"
+								},
+								"url": "{{base_url}}/api/Products/createOrUpdate"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:52:58 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product updated successfully.\",\n    \"product\": {\n        \"id\": 4,\n        \"arabicName\": \"هاتف ذكي محدث\",\n        \"englishName\": \"Updated Smartphone\",\n        \"price\": 899.99\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 5\n}"
+						},
+						"url": "{{base_url}}/api/Products/delete",
+						"description": "Delete a product (soft delete). Requires Admin role."
+					},
+					"response": [
+						{
+							"name": "Delete Product",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 5\n}"
+								},
+								"url": "{{base_url}}/api/Products/delete"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:53:17 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Product deleted successfully.\"\n}"
+						}
+					]
+				}
+			],
+			"description": "Product management endpoints. All endpoints use POST method."
+		},
+		{
+			"name": "Invoices",
+			"item": [
+				{
+					"name": "Create Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"details\": [\n        {\n            \"productId\": 4,\n            \"quantity\": 2\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 1\n        }\n    ]\n}"
+						},
+						"url": "{{base_url}}/api/Invoices/create",
+						"description": "Create a new invoice. The invoice will be automatically assigned to the logged-in user. Requires Visitor role."
+					},
+					"response": [
+						{
+							"name": "Create Invoice",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"details\": [\n        {\n            \"productId\": 4,\n            \"quantity\": 2\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 1\n        }\n    ]\n}"
+								},
+								"url": "{{base_url}}/api/Invoices/create"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:54:09 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invoice created successfully.\",\n    \"invoice\": {\n        \"id\": 1,\n        \"date\": \"2025-11-28T11:54:09.5188103Z\",\n        \"userId\": 2,\n        \"totalAmount\": 1825.48,\n        \"details\": [\n            {\n                \"productId\": 4,\n                \"productName\": \"\",\n                \"price\": 899.99,\n                \"quantity\": 2\n            },\n            {\n                \"productId\": 2,\n                \"productName\": \"\",\n                \"price\": 25.5,\n                \"quantity\": 1\n            }\n        ]\n    }\n}"
+						}
+					]
+				},
+				{
+					"name": "Get Invoice by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": "{{base_url}}/api/Invoices/getById",
+						"description": "Get invoice by ID. Visitors can only see their own invoices. Admins can see all invoices."
+					},
+					"response": [
+						{
+							"name": "Get Invoice by ID",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1\n}"
+								},
+								"url": "{{base_url}}/api/Invoices/getById"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:55:02 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"id\": 1,\n    \"date\": \"2025-11-28T11:54:09.5188103\",\n    \"userId\": 2,\n    \"totalAmount\": 1825.48,\n    \"details\": [\n        {\n            \"productId\": 4,\n            \"productName\": \"Updated Smartphone\",\n            \"price\": 899.99,\n            \"quantity\": 2\n        },\n        {\n            \"productId\": 2,\n            \"productName\": \"Mouse\",\n            \"price\": 25.5,\n            \"quantity\": 1\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "Get All Invoices",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": "{{base_url}}/api/Invoices/getAll",
+						"description": "Get all invoices. Requires Admin role."
+					},
+					"response": [
+						{
+							"name": "Get All Invoices",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": ""
+								},
+								"url": "{{base_url}}/api/Invoices/getAll"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:55:36 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "[\n    {\n        \"id\": 1,\n        \"date\": \"2025-11-28T11:54:09.5188103\",\n        \"userId\": 2,\n        \"totalAmount\": 1825.48,\n        \"details\": [\n            {\n                \"productId\": 4,\n                \"productName\": \"\",\n                \"price\": 899.99,\n                \"quantity\": 2\n            },\n            {\n                \"productId\": 2,\n                \"productName\": \"\",\n                \"price\": 25.5,\n                \"quantity\": 1\n            }\n        ]\n    }\n]"
+						}
+					]
+				},
+				{
+					"name": "Update Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"details\": [\n        {\n            \"productId\": 3,\n            \"quantity\": 3\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 2\n        }\n    ]\n}"
+						},
+						"url": "{{base_url}}/api/Invoices/update",
+						"description": "Update an existing invoice. Requires Admin role."
+					},
+					"response": [
+						{
+							"name": "Update Invoice",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"id\": 1,\n    \"details\": [\n        {\n            \"productId\": 4,\n            \"quantity\": 3\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 2\n        }\n    ]\n}"
+								},
+								"url": "{{base_url}}/api/Invoices/update"
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "",
+							"header": [
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json; charset=utf-8"
+								},
+								{
+									"key": "Server",
+									"value": "Microsoft-IIS/10.0"
+								},
+								{
+									"key": "X-Powered-By",
+									"value": "ASP.NET"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 28 Nov 2025 11:55:59 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"message\": \"Invoice updated successfully.\",\n    \"invoice\": {\n        \"id\": 1,\n        \"date\": \"2025-11-28T11:54:09.5188103\",\n        \"userId\": 2,\n        \"totalAmount\": 2750.97,\n        \"details\": [\n            {\n                \"productId\": 4,\n                \"productName\": \"Updated Smartphone\",\n                \"price\": 899.99,\n                \"quantity\": 3\n            },\n            {\n                \"productId\": 2,\n                \"productName\": \"Mouse\",\n                \"price\": 25.5,\n                \"quantity\": 2\n            }\n        ]\n    }\n}"
+						}
+					]
+				}
+			],
+			"description": "Invoice management endpoints. All endpoints use POST method."
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": {
+			"token": "{{jwt_token}}"
+		}
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"packages": {},
+				"requests": {},
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:44310"
+		},
+		{
+			"key": "jwt_token",
+			"value": ""
+		}
+	]
+}

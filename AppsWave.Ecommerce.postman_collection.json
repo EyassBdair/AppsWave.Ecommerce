@@ -1,0 +1,404 @@
+{
+	"info": {
+		"_postman_id": "apps-wave-ecommerce-api-v2",
+		"name": "AppsWave E-Commerce API",
+		"description": "Complete API collection for AppsWave E-Commerce System - All endpoints use POST method",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "apps-wave"
+	},
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "{{jwt_token}}",
+				"type": "string"
+			}
+		]
+	},
+	"item": [
+		{
+			"name": "Authentication",
+			"item": [
+				{
+					"name": "Register",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"pm.test(\"Response contains success message\", function () {",
+									"    var jsonData = pm.response.json();",
+									"    pm.expect(jsonData).to.be.a('string');",
+									"    pm.expect(jsonData).to.include('User registered successfully');",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"fullName\": \"Test User\",\n    \"email\": \"test@example.com\",\n    \"username\": \"testuser\",\n    \"password\": \"password123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"register"
+							]
+						},
+						"description": "Register a new user account. All users are registered as Visitors by default."
+					}
+				},
+				{
+					"name": "Login",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});",
+									"",
+									"var jsonData = pm.response.json();",
+									"pm.test(\"Response has token\", function () {",
+									"    pm.expect(jsonData).to.have.property('Token');",
+									"    pm.environment.set('jwt_token', jsonData.Token);",
+									"    pm.collectionVariables.set('jwt_token', jsonData.Token);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"username\": \"admin\",\n    \"password\": \"admin123\"\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Auth",
+								"login"
+							]
+						},
+						"description": "Login and get JWT token. The token will be automatically saved to environment variable 'jwt_token'."
+					}
+				}
+			],
+			"description": "Authentication endpoints for user registration and login."
+		},
+		{
+			"name": "Products",
+			"item": [
+				{
+					"name": "Get All Products",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"page\": 1,\n    \"pageSize\": 10\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Products/getAll",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Products",
+								"getAll"
+							]
+						},
+						"description": "Get paginated list of products. Requires Admin or Visitor role."
+					}
+				},
+				{
+					"name": "Get Product by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Products/getById",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Products",
+								"getById"
+							]
+						},
+						"description": "Get a single product by ID. Requires Admin or Visitor role."
+					}
+				},
+				{
+					"name": "Create Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 0,\n    \"arabicName\": \"هاتف ذكي\",\n    \"englishName\": \"Smartphone\",\n    \"price\": 999.99\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Products/createOrUpdate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Products",
+								"createOrUpdate"
+							]
+						},
+						"description": "Create a new product. Set id to 0 or omit it. Requires Admin role."
+					}
+				},
+				{
+					"name": "Update Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"arabicName\": \"هاتف ذكي محدث\",\n    \"englishName\": \"Updated Smartphone\",\n    \"price\": 899.99\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Products/createOrUpdate",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Products",
+								"createOrUpdate"
+							]
+						},
+						"description": "Update an existing product. Provide the product id. Requires Admin role."
+					}
+				},
+				{
+					"name": "Delete Product",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Products/delete",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Products",
+								"delete"
+							]
+						},
+						"description": "Delete a product (soft delete). Requires Admin role."
+					}
+				}
+			],
+			"description": "Product management endpoints. All endpoints use POST method."
+		},
+		{
+			"name": "Invoices",
+			"item": [
+				{
+					"name": "Create Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"details\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 2\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 1\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Invoices/create",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Invoices",
+								"create"
+							]
+						},
+						"description": "Create a new invoice. The invoice will be automatically assigned to the logged-in user. Requires Visitor role."
+					}
+				},
+				{
+					"name": "Get Invoice by ID",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Invoices/getById",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Invoices",
+								"getById"
+							]
+						},
+						"description": "Get invoice by ID. Visitors can only see their own invoices. Admins can see all invoices."
+					}
+				},
+				{
+					"name": "Get All Invoices",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Invoices/getAll",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Invoices",
+								"getAll"
+							]
+						},
+						"description": "Get all invoices. Requires Admin role."
+					}
+				},
+				{
+					"name": "Update Invoice",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"id\": 1,\n    \"details\": [\n        {\n            \"productId\": 1,\n            \"quantity\": 3\n        },\n        {\n            \"productId\": 2,\n            \"quantity\": 2\n        }\n    ]\n}"
+						},
+						"url": {
+							"raw": "{{base_url}}/api/Invoices/update",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"api",
+								"Invoices",
+								"update"
+							]
+						},
+						"description": "Update an existing invoice. Requires Admin role."
+					}
+				}
+			],
+			"description": "Invoice management endpoints. All endpoints use POST method."
+		}
+	],
+	"variable": [
+		{
+			"key": "base_url",
+			"value": "https://localhost:44310",
+			"type": "string"
+		},
+		{
+			"key": "jwt_token",
+			"value": "",
+			"type": "string"
+		}
+	]
+}
